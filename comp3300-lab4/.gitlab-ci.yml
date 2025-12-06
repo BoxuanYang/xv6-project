@@ -1,0 +1,30 @@
+variables:
+  ASSIGNMENT_NAME: "comp3300-lab4"
+  REPO_ROOT: "comp3300/2025/"
+  REPO_TOKEN: "comp3300-labs:gldt-uxtfy12gzKjDKXMZLkZZ"
+  MODIFIABLE_FILES: >
+    include/defs.h
+    kernel/exec.c
+    kernel/syscall.c
+    kernel/sysfile.c
+    kernel/sysproc.c
+    kernel/trap.c
+    kernel/vm.c
+
+stages:
+  - build
+
+default:
+  tags:
+    - comp3300
+
+build:
+  stage: build
+  image: atiu2019/anu-comp3300
+  script:
+    - git clone "https://${REPO_TOKEN}@gitlab.cecs.anu.edu.au/${REPO_ROOT}/${ASSIGNMENT_NAME}.git"
+    - for file in $MODIFIABLE_FILES; do
+    -   cp xv6/$file ${ASSIGNMENT_NAME}/xv6/$file
+    - done
+    - cd ${ASSIGNMENT_NAME}/xv6
+    - make fs.img xv6.img

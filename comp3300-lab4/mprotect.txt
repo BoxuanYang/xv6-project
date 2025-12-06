@@ -1,0 +1,102 @@
+$ testmprotect
+Running test 1...
+Attempting to write to protected buffer (should cause a segfault)...
+Segmentation fault: process 4 attempted to write to a protected address (0x1005000).
+Test 1 completed.
+
+Running test 2...
+Protecting buffer...
+Unprotecting buffer...
+Writing to unprotected buffer (should succeed)...
+OK: Wrote to unprotected buffer successfully
+Test 2 completed.
+
+Running test 3...
+OK: mprotect to KERNBASE failed as expected
+OK: munprotect to KERNBASE failed as expected
+Test 3 completed.
+
+Running test 4...
+OK: mprotect to invalid address failed as expected
+OK: munprotect to invalid address failed as expected
+Test 4 completed.
+
+Running test 5...
+OK: Calling read() with a protected (read-only) buffer failed as expected
+OK: Calling read() with an unprotected buffer succeeded as expected
+Test 5 completed.
+
+Running test 6...
+OK: Wrote to unprotected part of buffer successfully
+Segmentation fault: process 9 attempted to write to a protected address (0x1004000).
+Test 6 completed.
+
+Running test 7...
+OK: Calling read() with a partially protected buffer failed as expected
+Test 7 completed.
+
+Running test 8...
+OK: Protected mmapped memory successfully
+Attempting to write to protected mmapped memory (should cause a segfault)...
+Segmentation fault: process 11 attempted to write to a protected address (0x60000000).
+Test 8 completed.
+
+Running test 9...
+OK: Protected mmapped memory successfully
+OK: Unprotected mmapped memory successfully
+OK: Wrote to unprotected mmapped memory successfully
+Test 9 completed.
+
+Running test 10...
+OK: Protected part of mmapped memory successfully
+Attempting to write to protected part of mmapped memory (should cause a segfault)...
+Segmentation fault: process 13 attempted to write to a protected address (0x60001000).
+Test 10 completed.
+
+Running test 11...
+OK: Protected part of mmapped memory successfully
+OK: Unprotected part of mmapped memory successfully
+OK: Wrote to unprotected part of mmapped memory successfully
+Test 11 completed.
+
+Running test 12...
+OK: mprotect with length not multiple of page size succeeded
+Attempting to write to protected part of mmapped memory (should cause a segfault)...
+Segmentation fault: process 15 attempted to write to a protected address (0x1004000).
+Test 12 completed.
+
+Running test 13...
+Child process: attempting to write to protected memory (should cause a segfault)...
+Segmentation fault: process 17 attempted to write to a protected address (0x1003000).
+Parent process: done
+Test 13 completed.
+
+Running test 14...
+OK: mprotect with length 0 failed as expected
+Test 14 completed.
+
+Running test 15...
+OK: munprotect with length 0 failed as expected
+Test 15 completed.
+
+Running test 16...
+OK: mprotect with negative length failed as expected
+Test 16 completed.
+
+Running test 17...
+OK: munprotect with negative length failed as expected
+Test 17 completed.
+
+Running test 18...
+OK: mprotect with address not page-aligned failed as expected
+Test 18 completed.
+
+Running test 19...
+OK: munprotect with address not page-aligned failed as expected
+Test 19 completed.
+
+Running test 20...
+OK: mprotect with length exceeding mapped length failed as expected
+Writing to mmapped memory (should succeed)...
+OK: Wrote to mmapped memory successfully
+Test 20 completed.

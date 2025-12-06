@@ -1,0 +1,53 @@
+variables:
+  ASSIGNMENT_NAME: "comp3300-lab5"
+  REPO_ROOT: "comp3300/2025/"
+  REPO_TOKEN: "comp3300-labs:gldt-aXxLJ4WSZEDLt6FgrzXr"
+  MODIFIABLE_FILES: >
+    include/defs.h
+    include/proc.h
+    kernel/exec.c
+    kernel/proc.c
+    kernel/syscall.c
+    kernel/sysproc.c
+    kernel/vm.c
+    user/thread.c
+    user/umalloc.c
+stages:
+  - check
+  - build
+
+default:
+  tags:
+    - comp3300
+
+check:
+  stage: check
+  script:
+    - |
+      FILE="statement-of-originality.md"
+
+      # Check that 'name' is filled (not empty after colon)
+      if ! grep -Eq '^name:\s*[^[:space:]].+' "$FILE"; then
+        echo "❌ The 'name' field must not be empty in $FILE"
+        exit 1
+      fi
+
+      # Check that 'uid' is filled and matches u followed by 7 digits
+      if ! grep -Eq '^uid:\s*u[0-9]{7}$' "$FILE"; then
+        echo "❌ The 'uid' field must match the format u1234567 in $FILE"
+        exit 1
+      fi
+
+      echo "✅ statement-of-originality.md validation passed"
+
+build:
+  stage: build
+  image: atiu2019/anu-comp3300
+  script:
+    - git clone "https://${REPO_TOKEN}@gitlab.cecs.anu.edu.au/${REPO_ROOT}/${ASSIGNMENT_NAME}.git"
+    - for file in $MODIFIABLE_FILES; do
+    -   cp xv6/$file ${ASSIGNMENT_NAME}/xv6/$file
+    - done
+    - cd ${ASSIGNMENT_NAME}/xv6
+    - make fs.img xv6.img
+
